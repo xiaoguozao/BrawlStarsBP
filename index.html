@@ -11,7 +11,7 @@ select { padding: 10px; font-size: 16px; margin: 10px; }
 .pick { color: #00ff88; }
 .ban { color: #ff4444; }
 .avoid { color: #999; }
-.sixpick { color: #88ccff; }
+.six { color: #00aaff; }
 </style>
 </head>
 
@@ -66,10 +66,10 @@ document.getElementById("mapSelect").addEventListener("change", function() {
     if(cat && map && mapsData[cat][map]) {
         const data = mapsData[cat][map];
         resultDiv.innerHTML = `
-            <div class="section pick"><h2>推荐 Pick</h2><p>${data.pick.join("、")}</p></div>
-            <div class="section ban"><h2>推荐 Ban</h2><p>${data.ban.join("、")}</p></div>
-            <div class="section avoid"><h2>不建议拿</h2><p>${data.avoid.join("、")}</p></div>
-            ${data["六选"] ? `<div class="section sixpick"><h2>六选</h2><p>${data["六选"].join("、")}</p></div>` : ''}
+            <div class="section pick"><h2>推荐 Pick</h2><p>${data.pick ? data.pick.join("、") : "无"}</p></div>
+            <div class="section ban"><h2>推荐 Ban</h2><p>${data.ban ? data.ban.join("、") : "无"}</p></div>
+            <div class="section avoid"><h2>不建议拿</h2><p>${data.avoid ? data.avoid.join("、") : "无"}</p></div>
+            <div class="section six"><h2>六选</h2><p>${data["六选"] ? data["六选"].join("、") : "无"}</p></div>
         `;
     } else {
         resultDiv.innerHTML = '';
@@ -79,3 +79,4 @@ document.getElementById("mapSelect").addEventListener("change", function() {
 
 </body>
 </html>
+
