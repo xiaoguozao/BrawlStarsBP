@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>荒野乱斗 BP 推荐</title>
+<style>
+body {
+    font-family: Arial;
+    background: #111;
+    color: white;
+    text-align: center;
+}
+h1 { margin-top: 30px; }
+select { padding: 10px; font-size: 16px; margin-top: 20px; }
+.section {
+    margin-top: 25px;
+    border: 1px solid #444;
+    padding: 15px;
+    border-radius: 8px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.pick { color: #00ff88; }
+.ban { color: #ff4444; }
+.avoid { color: #999; }
+</style>
+</head>
+
+<body>
+<h1>荒野乱斗 排位 BP 推荐</h1>
+<select id="mapSelect">
+    <option value="">选择地图</option>
+    <option value="紫宝石城">紫宝石城</option>
+    <option value="硬石矿井">硬石矿井</option>
+</select>
+<div id="result"></div>
+
+<script>
+const maps = {
+  "紫宝石城": { pick: ["派珀","贝尔","曼迪"], ban: ["芽芽","格尔"], avoid: ["公牛","艾尔普里莫"] },
+  "硬石矿井": { pick: ["塔拉","珍妮特","格尔"], ban: ["曼迪","贝尔"], avoid: ["公牛"] }
+};
+document.getElementById("mapSelect").addEventListener("change", function() {
+    const selected = this.value;
+    const resultDiv = document.getElementById("result");
+    if(!selected || !maps[selected]) { resultDiv.innerHTML=""; return; }
+    const data = maps[selected];
+    resultDiv.innerHTML = `
+        <div class="section pick"><h2>推荐 Pick</h2><p>${data.pick.join("、")}</p></div>
+        <div class="section ban"><h2>推荐 Ban</h2><p>${data.ban.join("、")}</p></div>
+        <div class="section avoid"><h2>不建议拿</h2><p>${data.avoid.join("、")}</p></div>
+    `;
+});
+</script>
+</body>
+</html>
