@@ -1,144 +1,82 @@
-{
-  "宝石争霸": {
-    "硬石矿井": {
-      "pick": ["莉莉","风姬","凯特","谢德","汉克"],
-      "ban": ["珍妮特","公牛","谢德","鳄梨","凯特"],
-      "avoid": ["瑞科","拉夫"],
-      "六选": ["公牛","巴兹","奥利","罗莎"]
-    },
-    "水晶街机厅": {
-      "pick": ["拜伦","阿勃","德拉科","奥提斯","阿捨"],
-      "ban": ["?","?"],
-      "avoid": ["?"],
-      "六选": ["米科"]
-    },
-    "咻咻作响": {
-      "pick": ["米露","鳄梨","芬克斯（狗）","琥珀","莉莉","阿勃","基恩","载勇","阿勃","健次","格雷","道格","雪莉"],
-      "ban": ["?","?"],
-      "avoid": ["?"]
-    },
-    "宝石图都差不多": {}
-  },
-  "金库攻防": {
-    "遥远的桥": {
-      "pick": ["安吉洛","查克","米露"],
-      "ban": ["?"],
-      "avoid": ["?"],
-      "六选": ["米科","莉莉","佩佩","珠珠","科莱特","格里夫","卡尔"]
-    },
-    "安全区域": {
-      "pick": ["安吉洛","查克","米露","鳄梨"],
-      "ban": ["?","?"],
-      "avoid": ["?"],
-      "六选": ["米科","布洛克","格里夫","拜瑞"]
-    },
-    "轰隆峡谷": {
-      "pick": ["安吉洛","查克","米露","鳄梨"],
-      "ban": ["?","?"],
-      "avoid": ["?"],
-      "六选": ["米科","布洛克","格里夫","拜瑞"]
-    },
-    "烫手山芋": {
-      "pick": ["拜瑞","米露","鳄梨"],
-      "ban": ["?","?"],
-      "avoid": ["?"],
-      "六选": ["米科","麦克","格里夫","科迪64"]
-    },
-    "绝大部分金库图都差不多": {}
-  },
-  "赏金猎人": {
-    "酷热地带": {
-      "pick": ["米露","吉恩","安吉洛","格斯"],
-      "ban": ["?"],
-      "avoid": ["?"],
-      "六选": ["莫提斯","风姬","汉克","芽芽","鳄梨","健次","里昂"]
-    },
-    "草丛迷踪": {
-      "pick": ["米露","吉恩","安吉洛","格斯"],
-      "ban": ["?","?"],
-      "avoid": ["?"],
-      "六选": ["佩佩","风姬","格芽芽","格雷"]
-    },
-    "神秘流星": {
-      "pick": ["吉恩","安吉洛","格斯","佩佩","贝尔","曼迪","阿方","莫提斯","拜伦"],
-      "ban": ["?","?"],
-      "avoid": ["?"],
-      "六选": ["佩佩","风姬","格芽芽","格雷"]
-    },
-    "夹心蛋糕": {
-      "pick": ["吉恩","安吉洛","格斯","佩佩","贝尔","曼迪","莫提斯","拜伦"],
-      "ban": ["?","?"],
-      "avoid": ["?"],
-      "六选": ["佩佩","风姬","格芽芽","格雷"]
-    },
-    "绝大部分赏金图都差不多": {}
-  },
-  "乱斗淘汰赛": {
-    "摇滚贝尔": {
-      "pick": ["吉恩","安吉洛","格斯","佩佩","贝尔","曼迪","拜伦","格雷"],
-      "ban": ["?","?"],
-      "avoid": ["?"],
-      "六选": ["风姬","格芽芽"]
-    },
-    "新地平线": {
-      "pick": ["吉恩","安吉洛","格斯","布洛克","贝尔","曼迪","拜伦","格雷","佩佩"],
-      "ban": ["?","?"],
-      "avoid": ["?"],
-      "六选": ["汉克","芽芽"]
-    },
-    "空旷荒野": {
-      "pick": ["吉恩","米露","格斯","布洛克","安吉洛","贝尔","拜伦","格雷","佩佩"],
-      "ban": ["?","?"],
-      "avoid": ["?"],
-      "六选": ["莉莉","达里尔"]
-    },
-    "烈焰凤凰": {
-      "pick": ["吉恩","米露","格斯","布洛克","安吉洛","贝尔","拜伦","格雷","佩佩"],
-      "ban": ["?","?"],
-      "avoid": ["?"],
-      "六选": ["芽芽","道格"]
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>荒野乱斗 BP 推荐</title>
+<style>
+body { font-family: Arial; background: #111; color: white; text-align: center; }
+h1 { margin-top: 30px; }
+select { padding: 10px; font-size: 16px; margin: 10px; }
+.section { margin-top: 20px; border: 1px solid #444; padding: 15px; border-radius: 8px; width: 300px; margin: 10px auto; }
+.pick { color: #00ff88; }
+.ban { color: #ff4444; }
+.avoid { color: #999; }
+.six { color: #00aaff; }
+</style>
+</head>
+
+<body>
+<h1>荒野乱斗 BP 推荐</h1>
+
+<select id="categorySelect">
+  <option value="">选择分类</option>
+</select>
+
+<select id="mapSelect">
+  <option value="">选择地图</option>
+</select>
+
+<div id="result"></div>
+
+<script>
+let mapsData = {};
+
+fetch("maps.json")
+  .then(res => res.json())
+  .then(data => {
+    mapsData = data;
+    const categorySelect = document.getElementById("categorySelect");
+    Object.keys(mapsData).forEach(cat => {
+      const option = document.createElement("option");
+      option.value = cat;
+      option.textContent = cat;
+      categorySelect.appendChild(option);
+    });
+  });
+
+document.getElementById("categorySelect").addEventListener("change", function() {
+    const cat = this.value;
+    const mapSelect = document.getElementById("mapSelect");
+    mapSelect.innerHTML = '<option value="">选择地图</option>';
+    document.getElementById("result").innerHTML = '';
+    if(cat && mapsData[cat]) {
+        Object.keys(mapsData[cat]).forEach(map => {
+            const option = document.createElement("option");
+            option.value = map;
+            option.textContent = map;
+            mapSelect.appendChild(option);
+        });
     }
-  },
-  "乱斗足球": {
-    "中心舞台": {
-      "pick": ["吉恩","米露","雪莉","普利莫","公牛","莉莉","道格","格里夫","阿勃","雅琪"],
-      "ban": ["米露","鳄梨"],
-      "avoid": ["?"],
-      "六选": ["弗兰克","道格"]
-    },
-    "绿茵球场": {
-      "pick": ["鳄梨","米露","雪莉","普利莫","公牛","瑟琪","道格","格里夫","阿勃","雅琪"],
-      "ban": ["米露","鳄梨"],
-      "avoid": ["?"],
-      "六选": ["弗兰克","道格","普利莫"]
-    },
-    "后院球场": {
-      "pick": ["鳄梨","米露","公牛","格里夫","阿勃","贝尔"],
-      "ban": ["米露","鳄梨","格斯"],
-      "avoid": ["?"],
-      "六选": ["弗兰克","麦克斯","风姬","健次"]
-    },
-    "梦幻弹珠": {
-      "pick": ["鳄梨","米露","公牛","格里夫","阿勃","麦克斯"],
-      "ban": ["米露","鳄梨","格斯","汉克"],
-      "avoid": ["?"],
-      "六选": ["弗兰克","麦克斯","风姬","健次"]
-    },
-    "绝大部分足球图都差不多": {}
-  },
-  "热点争夺": {
-    "炽热火圈": {
-      "pick": ["鳄梨","米露","格斯","琥珀","阿勃","载勇","小丑","格雷","帕姆"],
-      "ban": ["米露","鳄梨","格斯","琥珀","阿勃"],
-      "avoid": ["?"],
-      "六选": ["弗兰克","莉莉","风姬","健次"]
+});
+
+document.getElementById("mapSelect").addEventListener("change", function() {
+    const cat = document.getElementById("categorySelect").value;
+    const map = this.value;
+    const resultDiv = document.getElementById("result");
+    if(cat && map && mapsData[cat][map]) {
+        const data = mapsData[cat][map];
+        resultDiv.innerHTML = `
+            <div class="section pick"><h2>推荐 Pick</h2><p>${data.pick ? data.pick.join("、") : "无"}</p></div>
+            <div class="section ban"><h2>推荐 Ban</h2><p>${data.ban ? data.ban.join("、") : "无"}</p></div>
+            <div class="section avoid"><h2>不建议拿</h2><p>${data.avoid ? data.avoid.join("、") : "无"}</p></div>
+            <div class="section six"><h2>六选</h2><p>${data["六选"] ? data["六选"].join("、") : "无"}</p></div>
+        `;
+    } else {
+        resultDiv.innerHTML = '';
     }
-  },
-  "甲虫决斗": {
-    "pick": ["鳄梨","米露","格斯","琥珀","汉克","载勇","小丑","格雷","帕姆"],
-    "ban": ["米露","鳄梨","格斯","琥珀","汉克"],
-    "avoid": ["?"],
-    "六选": ["弗兰克","莉莉","风姬","健次"]
-  },
-  "绝大部分热点图都差不多": {}
-}
+});
+</script>
+
+</body>
+</html>
+
