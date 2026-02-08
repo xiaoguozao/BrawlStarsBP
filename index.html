@@ -2,25 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>荒野乱斗 BP 推荐</title>
+<title>荒野乱斗 BP 推荐（分类版）</title>
 <style>
-body {
-    font-family: Arial;
-    background: #111;
-    color: white;
-    text-align: center;
-}
+body { font-family: Arial; background: #111; color: white; text-align: center; }
 h1 { margin-top: 30px; }
-select { padding: 10px; font-size: 16px; margin-top: 20px; }
-.section {
-    margin-top: 25px;
-    border: 1px solid #444;
-    padding: 15px;
-    border-radius: 8px;
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-}
+select { padding: 10px; font-size: 16px; margin: 10px; }
+.section { margin-top: 20px; border: 1px solid #444; padding: 15px; border-radius: 8px; width: 300px; margin: 10px auto; }
 .pick { color: #00ff88; }
 .ban { color: #ff4444; }
 .avoid { color: #999; }
@@ -28,30 +15,65 @@ select { padding: 10px; font-size: 16px; margin-top: 20px; }
 </head>
 
 <body>
-<h1>荒野乱斗 排位 BP 推荐</h1>
-<select id="mapSelect">
-    <option value="">选择地图</option>
-    <option value="测试1">测试1</option>
-    <option value="硬石矿井">硬石矿井</option>
+<h1>荒野乱斗 BP 推荐（分类版）</h1>
+
+<select id="categorySelect">
+  <option value="">选择分类</option>
 </select>
+
+<select id="mapSelect">
+  <option value="">选择地图</option>
+</select>
+
 <div id="result"></div>
 
 <script>
-const maps = {
-  "测试1": { pick: ["派珀","贝尔","曼迪"], ban: ["芽芽","格尔"], avoid: ["公牛","艾尔普里莫"] },
-  "硬石矿井": { pick: ["塔拉","珍妮特","格尔"], ban: ["曼迪","贝尔"], avoid: ["公牛"] }
-};
+let mapsData = {};
+
+fetch("maps.json")
+  .then(res => res.json())
+  .then(data => {
+    mapsData = data;
+    const categorySelect = document.getElementById("categorySelect");
+    Object.keys(mapsData).forEach(cat => {
+      const option = document.createElement("option");
+      option.value = cat;
+      option.textContent = cat;
+      categorySelect.appendChild(option);
+    });
+  });
+
+document.getElementById("categorySelect").addEventListener("change", function() {
+    const cat = this.value;
+    const mapSelect = document.getElementById("mapSelect");
+    mapSelect.innerHTML = '<option value="">选择地图</option>';
+    document.getElementById("result").innerHTML = '';
+    if(cat && mapsData[cat]) {
+        Object.keys(mapsData[cat]).forEach(map => {
+            const option = document.createElement("option");
+            option.value = map;
+            option.textContent = map;
+            mapSelect.appendChild(option);
+        });
+    }
+});
+
 document.getElementById("mapSelect").addEventListener("change", function() {
-    const selected = this.value;
+    const cat = document.getElementById("categorySelect").value;
+    const map = this.value;
     const resultDiv = document.getElementById("result");
-    if(!selected || !maps[selected]) { resultDiv.innerHTML=""; return; }
-    const data = maps[selected];
-    resultDiv.innerHTML = `
-        <div class="section pick"><h2>推荐 Pick</h2><p>${data.pick.join("、")}</p></div>
-        <div class="section ban"><h2>推荐 Ban</h2><p>${data.ban.join("、")}</p></div>
-        <div class="section avoid"><h2>不建议拿</h2><p>${data.avoid.join("、")}</p></div>
-    `;
+    if(cat && map && mapsData[cat][map]) {
+        const data = mapsData[cat][map];
+        resultDiv.innerHTML = `
+            <div class="section pick"><h2>推荐 Pick</h2><p>${data.pick.join("、")}</p></div>
+            <div class="section ban"><h2>推荐 Ban</h2><p>${data.ban.join("、")}</p></div>
+            <div class="section avoid"><h2>不建议拿</h2><p>${data.avoid.join("、")}</p></div>
+        `;
+    } else {
+        resultDiv.innerHTML = '';
+    }
 });
 </script>
+
 </body>
 </html>
